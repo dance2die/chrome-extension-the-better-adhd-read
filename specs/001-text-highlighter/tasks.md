@@ -1,150 +1,87 @@
 ---
-description: "Task list for Text Highlighter Extension implementation"
+
+description: "Task list for updating README documentation"
 ---
 
-# Tasks: Text Highlighter Extension
+# Tasks: Update README Documentation
 
 **Input**: Design documents from `/specs/001-text-highlighter/`
-**Prerequisites**: plan.md (required), spec.md (required for user stories), research.md, data-model.md, contracts/
+**Prerequisites**: plan.md (required), spec.md (required for user stories), quickstart.md
 
-**Tests**: Unit tests are MANDATORY for boundary detection logic. E2E tests are MANDATORY for core interaction flows.
+**Organization**: Tasks are grouped by phase and user story to enable independent verification.
 
-**Organization**: Tasks are grouped by user story to enable independent implementation and testing.
+## Format: `[ID] [P?] [Story] Description`
 
-## Phase 1: Setup (Shared Infrastructure)
-
-**Purpose**: Project initialization and basic structure using Bun
-
-- [x] T001 Create project structure per implementation plan (src/, tests/)
-- [x] T002 Initialize TypeScript project with Chrome Extension dependencies using Bun (`bun init`)
-- [x] T003 [P] Configure linting (ESLint) and formatting (Prettier) tools
-- [x] T004 [P] Setup Manifest V3 configuration in `src/manifest.json`
-- [x] T005 [P] Configure Playwright for extension E2E testing in `playwright.config.ts`
-- [x] T006 [P] Configure Bun test runner for unit tests
+- **[P]**: Can run in parallel
+- **[Story]**: Which user story this task belongs to (US1, US2, US3)
 
 ---
 
-## Phase 2: Foundational (Blocking Prerequisites)
+## Phase 1: Setup (Information Gathering)
 
-**Purpose**: Core infrastructure for state management and messaging
+**Purpose**: Collect data needed for documentation
 
-**⚠️ CRITICAL**: No user story work can begin until this phase is complete
-
-- [x] T007 Define shared types and interfaces in `src/common/types.ts` (HighlightConfig, HighlightMode)
-- [x] T008 Implement storage wrapper for `chrome.storage.local` in `src/common/storage.ts`
-- [x] T009 [P] Implement background service worker in `src/background/index.ts` (handles storage and messaging)
-- [x] T010 [P] Implement basic popup UI in `src/popup/index.html` and `src/popup/index.tsx` (toggle extension state)
-- [x] T011 [P] Create base CSS variables for highlighting in `src/styles/theme.css`
-- [x] T012 Setup message listener in content script in `src/content/index.ts` to receive `CONFIG_SYNC`
-
-**Checkpoint**: Foundation ready - basic extension toggling works, communication bridge is active.
+- [x] T001 [P] Extract remote repository URL from git config for use in installation steps
 
 ---
 
-## Phase 3: User Story 1 - Highlight Active Sentence (Priority: P1) 🎯 MVP
+## Phase 2: User Story 1 - Project Overview (Priority: P1)
 
-**Goal**: Highlight a sentence when the user clicks on it.
+**Goal**: Provide a professional description and feature summary in the README.
 
-**Independent Test**: Load extension, navigate to a page, click a sentence. Verify it is highlighted with default yellow background.
-
-### Tests for User Story 1 (MANDATORY) ⚠️
-
-- [x] T013 [P] [US1] Unit test for sentence boundary detection logic using Bun test in `tests/unit/boundary.test.ts`
-- [x] T014 [US1] Playwright E2E test for click-to-highlight sentence in `tests/e2e/sentence.spec.ts`
+**Independent Test**: Verify that the README contains a clear "Features" section describing P1, P2, and P3 capabilities.
 
 ### Implementation for User Story 1
 
-- [x] T015 [P] [US1] Implement sentence boundary detection using `Intl.Segmenter` in `src/content/segmenter.ts`
-- [x] T016 [US1] Implement click event listener in content script `src/content/index.ts` to identify clicked text node
-- [x] T017 [US1] Implement text wrapping logic to apply highlight `<span>` in `src/content/highlighter.ts`
-- [x] T018 [US1] Add highlight styles for `.ext-highlighter-active` in `src/styles/highlighter.css`
-- [x] T019 [US1] Ensure previous highlights are cleared before applying new ones in `src/content/highlighter.ts`
-- [x] T020 [US1] Implement toggle-off logic: Clicking an active highlight clears it (FR-009) in `src/content/highlighter.ts`
-- [x] T021 [US1] Implement clear-on-navigation logic: Remove highlights on `beforeunload` or URL change (FR-007) in `src/content/index.ts`
-- [x] T022 [US1] Verify Performance: Ensure highlight application takes < 16ms in `src/content/highlighter.ts`
-- [x] T023 [US1] Run `bun run build` and `bun run typecheck` to verify no errors.
-
-**Checkpoint**: MVP Ready - Sentence highlighting on click is fully functional and tested.
+- [x] T002 [US1] Add professional project description and feature list to `README.md`
+- [x] T003 [P] [US1] Add project prerequisites (Bun, Chrome/Edge) to `README.md`
 
 ---
 
-## Phase 4: User Story 2 - Highlight Entire Row (Priority: P2)
+## Phase 3: User Story 2 - Installation Instructions (Priority: P2)
 
-**Goal**: Highlight the entire horizontal line where the user clicks.
+**Goal**: Add clear installation and build steps using Bun.
 
-**Independent Test**: Select "Row" mode in popup. Click a line of text. Verify a horizontal highlight bar covers the width of the text container.
-
-### Tests for User Story 2 (MANDATORY) ⚠️
-
-- [x] T024 [US2] E2E test for Row highlight positioning and dimensions in `tests/e2e/row.spec.ts`
+**Independent Test**: Run the installation and build commands listed in the README to ensure they work as documented.
 
 ### Implementation for User Story 2
 
-- [x] T025 [P] [US2] Add "Row" option to popup UI in `src/popup/index.tsx`
-- [x] T026 [US2] Implement row detection (calculating line height and bounding box) in `src/content/segmenter.ts`
-- [x] T027 [US2] Implement overlay `<div>` rendering for row highlighting in `src/content/highlighter.ts`
-- [x] T028 [US2] Add styling for row overlay in `src/styles/highlighter.css` (pointer-events: none)
-- [x] T029 [US2] Run `bun run build` and `bun run typecheck` to verify no errors.
-
-**Checkpoint**: Row Highlighting Ready - Users can now use horizontal guide mode.
+- [x] T004 [US2] Add clear installation and build steps (clone, install, build) using Bun to `README.md`
+- [x] T005 [P] [US2] Add development and test execution commands (typecheck, test, test:e2e) to `README.md`
 
 ---
 
-## Phase 5: User Story 3 - Toggle Highlight Granularity (Priority: P3)
+## Phase 4: User Story 3 - Loading Instructions (Priority: P3)
 
-**Goal**: Allow users to switch between Word and Paragraph modes via the popup.
+**Goal**: Explain how to load the extension into Chrome/Edge for both main and feature branches.
 
-**Independent Test**: Use popup to change mode to "Word". Click a word on a page and verify only that word highlights.
-
-### Tests for User Story 3 (MANDATORY) ⚠️
-
-- [x] T030 [P] [US3] Unit test for Word and Paragraph boundary detection in `tests/unit/boundary.test.ts`
-- [x] T031 [US3] E2E test for switching modes and verifying highlight granularity in `tests/e2e/granularity.spec.ts`
+**Independent Test**: Verify the README explains how to use "Load unpacked" and provides branch-specific context.
 
 ### Implementation for User Story 3
 
-- [x] T032 [P] [US3] Update popup UI `src/popup/index.tsx` with dropdown/radio for Word and Paragraph modes
-- [x] T033 [US3] Update content script `src/content/index.ts` to respect `activeMode` from `HighlightConfig`
-- [x] T034 [US3] Implement word-level segmentation in `src/content/segmenter.ts`
-- [x] T035 [US3] Implement paragraph detection (finding nearest block element) in `src/content/segmenter.ts`
-- [x] T036 [US3] Refactor `src/content/highlighter.ts` to handle different granularity levels
-- [x] T037 [US3] Run `bun run build` and `bun run typecheck` to verify no errors.
-
-**Checkpoint**: Granularity Control Ready - User can now precisely control focus level for words and logical blocks.
+- [x] T006 [US3] Add detailed instructions for loading the extension in Chrome/Edge via `chrome://extensions/` to `README.md`
+- [x] T007 [P] [US3] Include specific context for loading from `main` or specific `<branch_name>` in `README.md`
 
 ---
 
-## Phase 6: Polish & Cross-Cutting Concerns
+## Phase 5: Polish & Cross-Cutting Concerns
 
-**Purpose**: Final refinements and quality assurance
+**Purpose**: Final verification
 
-- [x] T038 [P] Implement highlight color/opacity customization in popup `src/popup/index.tsx`
-- [x] T039 [P] Implement "Clear All Highlights" button in popup
-- [x] T040 [P] Optimize bundle size using `Bun.build` minification
-- [x] T041 Perform accessibility audit (contrast ratios for highlights)
-- [x] T042 [P] Verify Privacy: Audit network tab to ensure zero external trackers or data egress (NFR-004)
-- [x] T043 [P] Verify Compatibility: Smoke test extension on top 50 text-heavy domains (SC-004)
-- [x] T044 Final regression run of all E2E tests
+- [x] T008 Perform a final visual audit of the rendered `README.md` for formatting and link correctness
 
 ---
 
 ## Dependencies & Execution Order
 
-1. **Phase 1 (Setup)**: Mandatory first step.
-2. **Phase 2 (Foundational)**: MUST be complete before US1, US2, or US3.
-3. **Phase 3 (US1 - MVP)**: Highest priority. Can be delivered as an MVP.
-4. **Phase 4 (US2)** & **Phase 5 (US3)**: Dependent on Phase 2 & 3 (logic patterns).
-5. **Phase 6 (Polish)**: Final cleanup.
+1. **Setup (Phase 1)**: Must run first to get the URL.
+2. **Implementation (Phases 2-4)**: Can proceed in any order, but P1 is the logical starting point.
+3. **Polish (Phase 5)**: Final step after all content is added.
 
 ## Parallel Opportunities
 
-- T003, T004, T005, T006 (Setup configs)
-- T009, T010, T011 (Independent foundational layers)
-- T024, T030, T032, T033 (Granularity/Mode UI and logic can be worked in parallel)
+- T003, T005, and T007 can be drafted in parallel once the main structure is set.
 
 ## Implementation Strategy
 
-1. **Branch Strategy**: Create a separate feature branch for each phase (e.g., `feat/phase1-setup`, `feat/phase3-us1`).
-2. **MVP First**: Deliver User Story 1 (Sentence highlighting) as quickly as possible.
-3. **Incremental**: Add Row highlighting (P2) next as it provides a distinct reading guide.
-4. **Refine**: Add Word/Paragraph granularity (P3) and UI customizations last.
+- **Incremental Delivery**: Update sections one by one, ensuring accuracy of commands.
