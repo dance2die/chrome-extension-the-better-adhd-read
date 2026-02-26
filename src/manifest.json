@@ -11,15 +11,26 @@
   "action": {
     "default_popup": "popup/index.html"
   },
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": true
+  },
   "background": {
     "service_worker": "background/index.js",
     "type": "module"
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["content/index.js"],
-      "css": ["styles/theme.css", "styles/highlighter.css"]
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content/index.js"
+      ],
+      "css": [
+        "styles/theme.css",
+        "styles/highlighter.css"
+      ]
     }
   ]
 }

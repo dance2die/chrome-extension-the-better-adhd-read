@@ -11,6 +11,7 @@ async function runBuild() {
       "./src/background/index.ts",
       "./src/content/index.ts",
       "./src/popup/index.tsx",
+      "./src/options/options.tsx",
     ],
     outdir: "./dist",
     naming: "[dir]/[name].[ext]",
@@ -22,9 +23,13 @@ async function runBuild() {
   const assets = [
     { from: "src/manifest.json", to: "dist/manifest.json" },
     { from: "src/popup/index.html", to: "dist/popup/index.html" },
+    { from: "src/options/options.html", to: "dist/options/options.html" },
   ];
 
   for (const asset of assets) {
+    if (asset.from.includes('options/')) {
+      await mkdir("dist/options", { recursive: true });
+    }
     await copyFile(asset.from, asset.to);
     console.log(`✅ Copied ${asset.from} to ${asset.to}`);
   }
@@ -38,6 +43,11 @@ async function runBuild() {
       console.log(`✅ Copied src/styles/${file} to dist/styles/${file}`);
     }
   }
+
+  // 4. Copy options CSS
+  await mkdir("dist/options", { recursive: true });
+  await copyFile("src/options/options.css", "dist/options/options.css");
+  console.log("✅ Copied options.css");
 
   console.log("✨ Build complete!");
 }
