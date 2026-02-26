@@ -30,12 +30,12 @@ description: "Task list for Text Highlighter Extension implementation"
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T007 Define shared types and interfaces in `src/common/types.ts` (HighlightConfig, HighlightMode)
-- [ ] T008 Implement storage wrapper for `chrome.storage.local` in `src/common/storage.ts`
-- [ ] T009 [P] Implement background service worker in `src/background/index.ts` (handles storage and messaging)
-- [ ] T010 [P] Implement basic popup UI in `src/popup/index.html` and `src/popup/index.tsx` (toggle extension state)
-- [ ] T011 [P] Create base CSS variables for highlighting in `src/styles/theme.css`
-- [ ] T012 Setup message listener in content script in `src/content/index.ts` to receive `CONFIG_SYNC`
+- [x] T007 Define shared types and interfaces in `src/common/types.ts` (HighlightConfig, HighlightMode)
+- [x] T008 Implement storage wrapper for `chrome.storage.local` in `src/common/storage.ts`
+- [x] T009 [P] Implement background service worker in `src/background/index.ts` (handles storage and messaging)
+- [x] T010 [P] Implement basic popup UI in `src/popup/index.html` and `src/popup/index.tsx` (toggle extension state)
+- [x] T011 [P] Create base CSS variables for highlighting in `src/styles/theme.css`
+- [x] T012 Setup message listener in content script in `src/content/index.ts` to receive `CONFIG_SYNC`
 
 **Checkpoint**: Foundation ready - basic extension toggling works, communication bridge is active.
 

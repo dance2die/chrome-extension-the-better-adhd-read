@@ -1,0 +1,5 @@
+:root {
+  /* Default highlight theme */
+  --ext-highlighter-bg: rgba(255, 255, 0, 0.5); /* light yellow with 50% opacity */
+  --ext-highlighter-transition: background-color 0.2s ease-in-out;
+}
