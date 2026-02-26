@@ -9,23 +9,20 @@ let activeRowOverlay: HTMLDivElement | null = null;
  * Wraps the given text node boundary in a highlight span.
  */
 export function applyHighlight(textNode: Text, boundary: TextBoundary): void {
-  // 1. Clear any existing highlight first
-  clearHighlight();
-
-  // 2. Create the highlight wrapper element
+  // 1. Create the highlight wrapper element
   const span = document.createElement('span');
   span.className = 'ext-highlighter-active';
-  
+
   // 3. Extract the text based on the boundary
   // Note: Range is more robust for DOM manipulation than string replacement
   const range = document.createRange();
   try {
     range.setStart(textNode, boundary.start);
     range.setEnd(textNode, boundary.end);
-    
+
     // Surround the contents with our span
     range.surroundContents(span);
-    
+
     // Update state
     currentState = {
       target: span,
@@ -41,21 +38,19 @@ export function applyHighlight(textNode: Text, boundary: TextBoundary): void {
  * Applies a full-width row highlight overlay.
  */
 export function applyRowHighlight(parent: HTMLElement, boundary: RowBoundary): void {
-  clearHighlight();
-
   const overlay = document.createElement('div');
   overlay.className = 'ext-highlighter-row-overlay';
-  
+
   // Position it absolutely
   overlay.style.position = 'absolute';
   overlay.style.top = `${boundary.top}px`;
-  
+
   // Use the parent's width and left position for better alignment
   const parentRect = parent.getBoundingClientRect();
   overlay.style.left = `${parentRect.left + window.scrollX}px`;
   overlay.style.width = `${parentRect.width}px`;
   overlay.style.height = `${boundary.height}px`;
-  
+
   document.body.appendChild(overlay);
   activeRowOverlay = overlay;
 
@@ -73,15 +68,15 @@ export function clearHighlight(): void {
   // Clear span highlights
   if (currentState.target && currentState.target.className === 'ext-highlighter-active' && currentState.target.parentNode) {
     const parent = currentState.target.parentNode;
-    
+
     // Move all children out of the span before removing it
     while (currentState.target.firstChild) {
       parent.insertBefore(currentState.target.firstChild, currentState.target);
     }
-    
+
     // Remove the empty span
     parent.removeChild(currentState.target);
-    
+
     // Normalize text nodes to prevent fragmentation
     parent.normalize();
   }

@@ -41,7 +41,7 @@ if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.onMessage)
       console.log('📖 Better ADHD Read: Received updated config:', message.payload);
       currentConfig = message.payload;
       updateStyles(currentConfig);
-      
+
       if (!currentConfig.isEnabled) {
         clearHighlight();
       }
@@ -75,9 +75,19 @@ document.addEventListener('click', (event: MouseEvent) => {
   if (isAlreadyHighlighted(targetElement)) {
     console.log('📖 Better ADHD Read: Toggling off highlight');
     clearHighlight();
-    event.stopPropagation(); 
+    event.stopPropagation();
     return;
   }
+
+  // BUG #2 FIX: Don't interfere with native text selection (user dragging to copy)
+  const selection = window.getSelection();
+  if (selection && !selection.isCollapsed) {
+    return;
+  }
+
+  // BUG #1 FIX: Clear any existing highlight BEFORE obtaining the text node reference
+  // so that parent.normalize() doesn't invalidate the node we get below
+  clearHighlight();
 
   let range: Range | null = null;
   if (document.caretRangeFromPoint) {
@@ -96,7 +106,7 @@ document.addEventListener('click', (event: MouseEvent) => {
   }
 
   const t0 = performance.now();
-  
+
   if (currentConfig.activeMode === 'sentence') {
     const boundary = getSentenceBoundaries(textNode.textContent, range.startOffset);
     if (boundary) {
