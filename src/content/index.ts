@@ -1,6 +1,6 @@
 import type { ExtensionMessage, HighlightConfig } from '../common/types';
 import { DEFAULT_CONFIG } from '../common/types';
-import { getSentenceBoundaries, getRowBoundaries } from './segmenter';
+import { getSentenceBoundaries, getRowBoundaries, getWordBoundaries, getParagraphBoundaries } from './segmenter';
 import { applyHighlight, clearHighlight, isAlreadyHighlighted, applyRowHighlight } from './highlighter';
 
 // Global state for the content script
@@ -77,6 +77,18 @@ document.addEventListener('click', (event: MouseEvent) => {
       }
       
       // Clear selection so the user doesn't see browser highlight over our custom highlight
+      selection.removeAllRanges();
+    }
+  } else if (currentConfig.activeMode === 'word') {
+    const boundary = getWordBoundaries(textNode.textContent, range.startOffset);
+    if (boundary) {
+      applyHighlight(textNode as Text, boundary);
+      selection.removeAllRanges();
+    }
+  } else if (currentConfig.activeMode === 'paragraph') {
+    const boundary = getParagraphBoundaries(textNode.textContent, range.startOffset);
+    if (boundary) {
+      applyHighlight(textNode as Text, boundary);
       selection.removeAllRanges();
     }
   } else if (currentConfig.activeMode === 'row') {

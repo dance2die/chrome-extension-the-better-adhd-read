@@ -47,7 +47,7 @@ const Popup = () => {
       <div style={{ marginTop: '16px' }}>
         <p style={{ fontWeight: 'bold', marginBottom: '8px' }}>Mode</p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          {(['sentence', 'row'] as HighlightMode[]).map((mode) => (
+          {(['word', 'sentence', 'paragraph', 'row'] as HighlightMode[]).map((mode) => (
             <label key={mode} style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
               <input
                 type="radio"

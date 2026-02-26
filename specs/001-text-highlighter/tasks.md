@@ -98,17 +98,17 @@ description: "Task list for Text Highlighter Extension implementation"
 
 ### Tests for User Story 3 (MANDATORY) ⚠️
 
-- [ ] T030 [P] [US3] Unit test for Word and Paragraph boundary detection in `tests/unit/boundary.test.ts`
-- [ ] T031 [US3] E2E test for switching modes and verifying highlight granularity in `tests/e2e/granularity.spec.ts`
+- [x] T030 [P] [US3] Unit test for Word and Paragraph boundary detection in `tests/unit/boundary.test.ts`
+- [x] T031 [US3] E2E test for switching modes and verifying highlight granularity in `tests/e2e/granularity.spec.ts`
 
 ### Implementation for User Story 3
 
-- [ ] T032 [P] [US3] Update popup UI `src/popup/index.tsx` with dropdown/radio for Word and Paragraph modes
-- [ ] T033 [US3] Update content script `src/content/index.ts` to respect `activeMode` from `HighlightConfig`
-- [ ] T034 [US3] Implement word-level segmentation in `src/content/segmenter.ts`
-- [ ] T035 [US3] Implement paragraph detection (finding nearest block element) in `src/content/segmenter.ts`
-- [ ] T036 [US3] Refactor `src/content/highlighter.ts` to handle different granularity levels
-- [ ] T037 [US3] Run `bun run build` and `bun run typecheck` to verify no errors.
+- [x] T032 [P] [US3] Update popup UI `src/popup/index.tsx` with dropdown/radio for Word and Paragraph modes
+- [x] T033 [US3] Update content script `src/content/index.ts` to respect `activeMode` from `HighlightConfig`
+- [x] T034 [US3] Implement word-level segmentation in `src/content/segmenter.ts`
+- [x] T035 [US3] Implement paragraph detection (finding nearest block element) in `src/content/segmenter.ts`
+- [x] T036 [US3] Refactor `src/content/highlighter.ts` to handle different granularity levels
+- [x] T037 [US3] Run `bun run build` and `bun run typecheck` to verify no errors.
 
 **Checkpoint**: Granularity Control Ready - User can now precisely control focus level for words and logical blocks.
 

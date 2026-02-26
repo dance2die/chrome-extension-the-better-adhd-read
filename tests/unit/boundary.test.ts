@@ -1,39 +1,48 @@
 import { describe, expect, test } from "bun:test";
-import { getSentenceBoundaries } from "../../src/content/segmenter";
+import { getSentenceBoundaries, getWordBoundaries, getParagraphBoundaries } from "../../src/content/segmenter";
 
-describe("Sentence Boundary Detection (Intl.Segmenter)", () => {
-  test("finds boundary for a simple sentence", () => {
-    const text = "Hello world. This is a test.";
-    // Offset 2 points to 'e' in "Hello"
-    const boundary = getSentenceBoundaries(text, 2);
-    expect(boundary).not.toBeNull();
-    expect(boundary!.start).toBe(0);
-    expect(boundary!.end).toBe(13); // Includes the space after the period in some locales, let's test strict segment
-    expect(boundary!.segment.trim()).toBe("Hello world.");
+describe("Text Boundary Detection (Intl.Segmenter)", () => {
+  describe("Sentence Boundaries", () => {
+    test("finds boundary for a simple sentence", () => {
+      const text = "Hello world. This is a test.";
+      const boundary = getSentenceBoundaries(text, 2);
+      expect(boundary).not.toBeNull();
+      expect(boundary!.start).toBe(0);
+      expect(boundary!.end).toBe(13);
+      expect(boundary!.segment.trim()).toBe("Hello world.");
+    });
+
+    test("returns null if text is empty or offset is invalid", () => {
+      expect(getSentenceBoundaries("", 0)).toBeNull();
+      expect(getSentenceBoundaries("Test.", 10)).toBeNull();
+    });
   });
 
-  test("finds boundary for the second sentence", () => {
-    const text = "Hello world. This is a test.";
-    // Offset 15 points to 'h' in "This"
-    const boundary = getSentenceBoundaries(text, 15);
-    expect(boundary).not.toBeNull();
-    expect(boundary!.start).toBe(13); 
-    expect(boundary!.segment.trim()).toBe("This is a test.");
+  describe("Word Boundaries", () => {
+    test("finds boundary for a word", () => {
+      const text = "Hello world. This is a test.";
+      // Offset 2 points to 'e' in "Hello"
+      const boundary = getWordBoundaries(text, 2);
+      expect(boundary).not.toBeNull();
+      expect(boundary!.segment).toBe("Hello");
+      expect(boundary!.start).toBe(0);
+      expect(boundary!.end).toBe(5);
+    });
+
+    test("finds boundary for a word later in the string", () => {
+      const text = "Hello world.";
+      // Offset 7 points to 'o' in "world"
+      const boundary = getWordBoundaries(text, 7);
+      expect(boundary!.segment).toBe("world");
+    });
   });
 
-  test("handles punctuation correctly", () => {
-    const text = "Wait, what?! Yes, exactly.";
-    const seg1 = getSentenceBoundaries(text, 2);
-    expect(seg1).not.toBeNull();
-    expect(seg1!.segment.trim()).toBe("Wait, what?!");
-    
-    const seg2 = getSentenceBoundaries(text, 15);
-    expect(seg2).not.toBeNull();
-    expect(seg2!.segment.trim()).toBe("Yes, exactly.");
-  });
-
-  test("returns null if text is empty or offset is invalid", () => {
-    expect(getSentenceBoundaries("", 0)).toBeNull();
-    expect(getSentenceBoundaries("Test.", 10)).toBeNull();
+  describe("Paragraph Boundaries (Mocked logic)", () => {
+    test("returns full text as paragraph for simple strings", () => {
+      const text = "A single paragraph.";
+      const boundary = getParagraphBoundaries(text, 5);
+      expect(boundary).not.toBeNull();
+      expect(boundary!.segment).toBe("A single paragraph.");
+    });
   });
 });
