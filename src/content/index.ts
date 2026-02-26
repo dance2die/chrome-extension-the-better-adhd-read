@@ -21,7 +21,7 @@ if (typeof window !== 'undefined') {
 /**
  * Determines the final highlight color based on the config and current theme.
  */
-function getEffectiveColor(config: HighlightConfig): string {
+export function getEffectiveColor(config: HighlightConfig): string {
   if (config.themeMode === 'light') return config.lightColor;
   if (config.themeMode === 'dark') return config.darkColor;
 

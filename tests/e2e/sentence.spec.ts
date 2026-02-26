@@ -29,14 +29,14 @@ test.describe('Text Highlighter Extension - Sentence Mode', () => {
     // 2. Inject our content script logic directly for the test since we aren't 
     // launching a full persistent Chrome profile with the unpacked extension here.
     // In a full CI setup, this would be handled by launching chromium with `--load-extension`.
-    await page.addScriptTag({ path: './dist/content/index.js' });
+    await page.addScriptTag({ path: './dist/content/index.js', type: 'module' });
     await page.addStyleTag({ path: './src/styles/theme.css' });
     await page.addStyleTag({ path: './src/styles/highlighter.css' });
 
     // 3. Simulate the config being loaded and enabled using the test hook
     await page.evaluate(() => {
       // @ts-ignore
-      window.__ADHD_READ_CONFIG__({ activeMode: 'sentence', isEnabled: true, color: '#ffff00', opacity: 0.5 });
+      window.__ADHD_READ_CONFIG__({ activeMode: 'sentence', isEnabled: true, lightColor: '#ffff00', darkColor: '#004d40', themeMode: 'light', opacity: 0.5 });
     });
 
     // 4. Click on the first sentence (approximate coordinates or specific element)

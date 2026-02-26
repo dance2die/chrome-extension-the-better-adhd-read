@@ -19,14 +19,14 @@ test.describe('Text Highlighter Extension - Row Mode', () => {
     `);
 
     // 2. Inject scripts and styles
-    await page.addScriptTag({ path: './dist/content/index.js' });
+    await page.addScriptTag({ path: './dist/content/index.js', type: 'module' });
     await page.addStyleTag({ path: './src/styles/theme.css' });
     await page.addStyleTag({ path: './src/styles/highlighter.css' });
 
     // 3. Enable Row mode
     await page.evaluate(() => {
       // @ts-ignore
-      window.__ADHD_READ_CONFIG__({ activeMode: 'row', isEnabled: true, color: '#ffff00', opacity: 0.5 });
+      window.__ADHD_READ_CONFIG__({ activeMode: 'row', isEnabled: true, lightColor: '#ffff00', darkColor: '#004d40', themeMode: 'light', opacity: 0.5 });
     });
 
     // 4. Click on the first line
@@ -36,7 +36,7 @@ test.describe('Text Highlighter Extension - Row Mode', () => {
     // 5. Verify the highlight overlay
     const overlay = page.locator('.ext-highlighter-row-overlay');
     await expect(overlay).toBeVisible();
-    
+
     // Check if it's full width (based on container width)
     const box = await overlay.boundingBox();
     expect(box?.width).toBeGreaterThan(400); // Should be close to 500px

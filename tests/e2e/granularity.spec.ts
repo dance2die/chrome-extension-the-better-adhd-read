@@ -10,14 +10,14 @@ test.describe('Text Highlighter Extension - Granularity', () => {
       </html>
     `);
 
-    await page.addScriptTag({ path: './dist/content/index.js' });
+    await page.addScriptTag({ path: './dist/content/index.js', type: 'module' });
     await page.addStyleTag({ path: './src/styles/theme.css' });
     await page.addStyleTag({ path: './src/styles/highlighter.css' });
 
     // Enable Word mode
     await page.evaluate(() => {
       // @ts-ignore
-      window.__ADHD_READ_CONFIG__({ activeMode: 'word', isEnabled: true, color: '#ffff00', opacity: 0.5 });
+      window.__ADHD_READ_CONFIG__({ activeMode: 'word', isEnabled: true, lightColor: '#ffff00', darkColor: '#004d40', themeMode: 'light', opacity: 0.5 });
     });
 
     // Click near "this"
@@ -38,14 +38,14 @@ test.describe('Text Highlighter Extension - Granularity', () => {
       </html>
     `);
 
-    await page.addScriptTag({ path: './dist/content/index.js' });
+    await page.addScriptTag({ path: './dist/content/index.js', type: 'module' });
     await page.addStyleTag({ path: './src/styles/theme.css' });
     await page.addStyleTag({ path: './src/styles/highlighter.css' });
 
     // Enable Paragraph mode
     await page.evaluate(() => {
       // @ts-ignore
-      window.__ADHD_READ_CONFIG__({ activeMode: 'paragraph', isEnabled: true, color: '#ffff00', opacity: 0.5 });
+      window.__ADHD_READ_CONFIG__({ activeMode: 'paragraph', isEnabled: true, lightColor: '#ffff00', darkColor: '#004d40', themeMode: 'light', opacity: 0.5 });
     });
 
     const p1 = page.locator('#p1');
