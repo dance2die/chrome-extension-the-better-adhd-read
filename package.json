@@ -28,6 +28,8 @@
     "build": "bun run build.ts",
     "typecheck": "tsc --noEmit",
     "test": "bun test tests/unit",
-    "test:e2e": "npx playwright test"
+    "test:e2e": "npx playwright test",
+    "lint": "eslint src/",
+    "package": "bun run build && cd dist && zip -r ../better-adhd-read.zip ."
   }
 }

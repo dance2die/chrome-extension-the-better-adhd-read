@@ -49,6 +49,16 @@ async function runBuild() {
   await copyFile("src/options/options.css", "dist/options/options.css");
   console.log("✅ Copied options.css");
 
+  // 5. Copy icons
+  await mkdir("dist/icons", { recursive: true });
+  const iconFiles = await readdir("src/icons");
+  for (const file of iconFiles) {
+    if (file.endsWith(".png")) {
+      await copyFile(join("src/icons", file), join("dist/icons", file));
+      console.log(`✅ Copied src/icons/${file} to dist/icons/${file}`);
+    }
+  }
+
   console.log("✨ Build complete!");
 }
 
