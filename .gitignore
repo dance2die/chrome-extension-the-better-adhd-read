@@ -1,3 +1,31 @@
 # AI Agent Folder
-# Ignore all private artifacts, tokens, and local agent state
 .gemini/
+
+# Dependency directories
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+bun.lockb
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor folders
+.vscode/
+.idea/
+*.swp
+*.tmp

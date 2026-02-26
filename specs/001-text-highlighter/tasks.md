@@ -15,12 +15,12 @@ description: "Task list for Text Highlighter Extension implementation"
 
 **Purpose**: Project initialization and basic structure using Bun
 
-- [ ] T001 Create project structure per implementation plan (src/, tests/)
-- [ ] T002 Initialize TypeScript project with Chrome Extension dependencies using Bun (`bun init`)
-- [ ] T003 [P] Configure linting (ESLint) and formatting (Prettier) tools
-- [ ] T004 [P] Setup Manifest V3 configuration in `src/manifest.json`
-- [ ] T005 [P] Configure Playwright for extension E2E testing in `playwright.config.ts`
-- [ ] T006 [P] Configure Bun test runner for unit tests
+- [x] T001 Create project structure per implementation plan (src/, tests/)
+- [x] T002 Initialize TypeScript project with Chrome Extension dependencies using Bun (`bun init`)
+- [x] T003 [P] Configure linting (ESLint) and formatting (Prettier) tools
+- [x] T004 [P] Setup Manifest V3 configuration in `src/manifest.json`
+- [x] T005 [P] Configure Playwright for extension E2E testing in `playwright.config.ts`
+- [x] T006 [P] Configure Bun test runner for unit tests
 
 ---
 
