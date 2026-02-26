@@ -16,7 +16,7 @@ tests/
 
 ## Commands
 
-bun test && bun run lint
+bun run build && bun test && bun run lint
 
 ## Code Style
 

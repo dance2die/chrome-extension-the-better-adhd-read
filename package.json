@@ -24,7 +24,7 @@
     "react-dom": "^19.2.4"
   },
   "scripts": {
-    "build": "bun build ./src/background/index.ts ./src/content/index.ts ./src/popup/index.tsx --outdir ./dist",
+    "build": "bun run build.ts",
     "typecheck": "tsc --noEmit",
     "test": "bun test tests/unit",
     "test:e2e": "npx playwright test"
