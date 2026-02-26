@@ -118,13 +118,13 @@ description: "Task list for Text Highlighter Extension implementation"
 
 **Purpose**: Final refinements and quality assurance
 
-- [ ] T038 [P] Implement highlight color/opacity customization in popup `src/popup/index.tsx`
-- [ ] T039 [P] Implement "Clear All Highlights" button in popup
-- [ ] T040 [P] Optimize bundle size using `Bun.build` minification
-- [ ] T041 Perform accessibility audit (contrast ratios for highlights)
-- [ ] T042 [P] Verify Privacy: Audit network tab to ensure zero external trackers or data egress (NFR-004)
-- [ ] T043 [P] Verify Compatibility: Smoke test extension on top 50 text-heavy domains (SC-004)
-- [ ] T044 Final regression run of all E2E tests
+- [x] T038 [P] Implement highlight color/opacity customization in popup `src/popup/index.tsx`
+- [x] T039 [P] Implement "Clear All Highlights" button in popup
+- [x] T040 [P] Optimize bundle size using `Bun.build` minification
+- [x] T041 Perform accessibility audit (contrast ratios for highlights)
+- [x] T042 [P] Verify Privacy: Audit network tab to ensure zero external trackers or data egress (NFR-004)
+- [x] T043 [P] Verify Compatibility: Smoke test extension on top 50 text-heavy domains (SC-004)
+- [x] T044 Final regression run of all E2E tests
 
 ---
 
