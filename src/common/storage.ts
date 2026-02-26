@@ -15,7 +15,7 @@ export const storage = {
         const config = data[STORAGE_KEY];
         if (!config) return DEFAULT_CONFIG;
 
-        return this.migrateConfig(config);
+        return this.migrateConfig(config as Record<string, unknown>);
       }
       return DEFAULT_CONFIG;
     } catch (error) {
@@ -27,15 +27,15 @@ export const storage = {
   /**
    * Migrates old configuration formats to the current one.
    */
-  migrateConfig(config: any): HighlightConfig {
+  migrateConfig(config: Record<string, unknown>): HighlightConfig {
     // Migration from single 'color' property
-    if (config.color && !config.lightColor) {
+    if (config['color'] && !config['lightColor']) {
       return {
         ...DEFAULT_CONFIG,
         ...config,
-        lightColor: config.color,
+        lightColor: config['color'] as string,
         // The rest come from DEFAULT_CONFIG (darkColor, themeMode)
-      };
+      } as HighlightConfig;
     }
 
     // Ensure all required fields exist

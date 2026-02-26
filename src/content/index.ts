@@ -1,4 +1,4 @@
-import type { ExtensionMessage, HighlightConfig } from '../common/types';
+import type { HighlightConfig } from '../common/types';
 import { DEFAULT_CONFIG } from '../common/types';
 import { getSentenceBoundaries, getRowBoundaries, getWordBoundaries, getParagraphBoundaries } from './segmenter';
 import { applyHighlight, clearHighlight, isAlreadyHighlighted, applyRowHighlight } from './highlighter';
@@ -12,7 +12,7 @@ let currentConfig: HighlightConfig = DEFAULT_CONFIG;
 
 // Export for testing purposes
 if (typeof window !== 'undefined') {
-  (window as any).__ADHD_READ_CONFIG__ = (config: HighlightConfig) => {
+  (window as unknown as { __ADHD_READ_CONFIG__: (config: HighlightConfig) => void }).__ADHD_READ_CONFIG__ = (config: HighlightConfig) => {
     console.log('📖 Better ADHD Read: Test config injected:', config);
     currentConfig = config;
     updateStyles(config);
@@ -49,16 +49,17 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () 
 
 // Listen for messages from the background script
 if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.onMessage) {
-  chrome.runtime.onMessage.addListener((message: any) => {
-    if (message.type === 'CONFIG_SYNC') {
-      console.log('📖 Better ADHD Read: Received updated config:', message.payload);
-      currentConfig = message.payload;
+  chrome.runtime.onMessage.addListener((message: unknown) => {
+    const msg = message as { type: string; payload?: HighlightConfig };
+    if (msg.type === 'CONFIG_SYNC' && msg.payload) {
+      console.log('📖 Better ADHD Read: Received updated config:', msg.payload);
+      currentConfig = msg.payload;
       updateStyles(currentConfig);
 
       if (!currentConfig.isEnabled) {
         clearHighlight();
       }
-    } else if (message.type === 'CLEAR_HIGHLIGHTS') {
+    } else if (msg.type === 'CLEAR_HIGHLIGHTS') {
       console.log('📖 Better ADHD Read: Clearing highlights.');
       clearHighlight();
     }
@@ -133,7 +134,7 @@ document.addEventListener('click', (event: MouseEvent) => {
       selectionCleanup();
     }
   } else if (currentConfig.activeMode === 'paragraph') {
-    const boundary = getParagraphBoundaries(textNode.textContent, range.startOffset);
+    const boundary = getParagraphBoundaries(textNode.textContent);
     if (boundary) {
       applyHighlight(textNode as Text, boundary);
       selectionCleanup();

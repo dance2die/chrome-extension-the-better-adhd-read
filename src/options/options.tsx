@@ -123,10 +123,10 @@ const Options = () => {
                 <h2 className="section-title">Preview</h2>
                 <div className="preview-grid">
                     <div className="preview-box light">
-                        <p>On a <strong>light website</strong> like Wikipedia, your highlight will look like <span className="highlighted" style={{ '--hl-color': config.lightColor } as any}>this sentence right here</span>.</p>
+                        <p>On a <strong>light website</strong> like Wikipedia, your highlight will look like <span className="highlighted" style={{ '--hl-color': config.lightColor } as React.CSSProperties}>this sentence right here</span>.</p>
                     </div>
                     <div className="preview-box dark">
-                        <p>On a <strong>dark website</strong> like Hacker News, your highlight will look like <span className="highlighted" style={{ '--hl-color': config.darkColor } as any}>this sentence right here</span>.</p>
+                        <p>On a <strong>dark website</strong> like Hacker News, your highlight will look like <span className="highlighted" style={{ '--hl-color': config.darkColor } as React.CSSProperties}>this sentence right here</span>.</p>
                     </div>
                 </div>
             </div>

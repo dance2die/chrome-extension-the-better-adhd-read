@@ -57,7 +57,7 @@ export function getWordBoundaries(text: string, offset: number): TextBoundary | 
       // Intl.Segmenter 'word' granularity includes spaces/punctuation.
       // We check if it's actually a word (contains alphanumeric).
       if (!segmentData.isWordLike) {
-        return null; 
+        return null;
       }
       return {
         start: currentStart,
@@ -75,7 +75,7 @@ export function getWordBoundaries(text: string, offset: number): TextBoundary | 
  * Finds the logical paragraph boundaries.
  * For a single text node, the "paragraph" is the entire text content.
  */
-export function getParagraphBoundaries(text: string, _offset: number): TextBoundary | null {
+export function getParagraphBoundaries(text: string): TextBoundary | null {
   if (!text) return null;
   return {
     start: 0,
