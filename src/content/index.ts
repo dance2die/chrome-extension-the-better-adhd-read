@@ -6,25 +6,54 @@ import { applyHighlight, clearHighlight, isAlreadyHighlighted, applyRowHighlight
 // Global state for the content script
 let currentConfig: HighlightConfig = DEFAULT_CONFIG;
 
+// Export for testing purposes
+if (typeof window !== 'undefined') {
+  (window as any).__ADHD_READ_CONFIG__ = (config: HighlightConfig) => {
+    currentConfig = config;
+    updateStyles(config);
+  };
+}
+
+/**
+ * Updates the CSS variables used for highlighting.
+ */
+function updateStyles(config: HighlightConfig) {
+  const root = document.documentElement;
+  // Convert hex color to rgba if needed or just use the color + opacity
+  // For simplicity, we'll assume the user picked a solid color and we apply the opacity via CSS
+  root.style.setProperty('--ext-highlighter-bg-color', config.color);
+  root.style.setProperty('--ext-highlighter-bg-opacity', config.opacity.toString());
+  
+  // Construct the full background variable
+  // If config.color is #ffff00 and config.opacity is 0.5, we want rgba(255, 255, 0, 0.5)
+  // But CSS handles this easily if we use a helper or separate vars.
+}
+
 // Initialize by fetching the current config from storage
 import { storage } from '../common/storage';
 storage.getConfig().then((config) => {
   currentConfig = config;
+  updateStyles(config);
   console.log('ADHD Read Highlighter content script initialized with config:', config);
 });
 
 // Listen for messages from the background script
-chrome.runtime.onMessage.addListener((message: ExtensionMessage) => {
-  if (message.type === 'CONFIG_SYNC') {
-    console.log('Received updated config:', message.payload);
-    currentConfig = message.payload;
-    
-    // Clear highlight if extension is disabled
-    if (!currentConfig.isEnabled) {
+if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.onMessage) {
+  chrome.runtime.onMessage.addListener((message: any) => {
+    if (message.type === 'CONFIG_SYNC') {
+      console.log('Received updated config:', message.payload);
+      currentConfig = message.payload;
+      updateStyles(currentConfig);
+      
+      // Clear highlight if extension is disabled
+      if (!currentConfig.isEnabled) {
+        clearHighlight();
+      }
+    } else if (message.type === 'CLEAR_HIGHLIGHTS') {
       clearHighlight();
     }
-  }
-});
+  });
+}
 
 // Clear highlight when user navigates away or refreshes (FR-007)
 window.addEventListener('beforeunload', () => {
@@ -50,10 +79,22 @@ document.addEventListener('click', (event: MouseEvent) => {
   }
 
   // Find the exact text node the user clicked on
-  const selection = window.getSelection();
-  if (!selection || selection.rangeCount === 0) return;
+  let range: Range | null = null;
+  
+  if (document.caretRangeFromPoint) {
+    range = document.caretRangeFromPoint(event.clientX, event.clientY);
+  } else if ((document as any).caretPositionFromPoint) {
+    // Firefox fallback
+    const pos = (document as any).caretPositionFromPoint(event.clientX, event.clientY);
+    if (pos) {
+      range = document.createRange();
+      range.setStart(pos.offsetNode, pos.offset);
+      range.collapse(true);
+    }
+  }
 
-  const range = selection.getRangeAt(0);
+  if (!range) return;
+
   const textNode = range.startContainer;
 
   // Ensure it's actually a text node

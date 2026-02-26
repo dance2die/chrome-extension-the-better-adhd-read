@@ -27,6 +27,6 @@
     "build": "bun build ./src/background/index.ts ./src/content/index.ts ./src/popup/index.tsx --outdir ./dist",
     "typecheck": "tsc --noEmit",
     "test": "bun test tests/unit",
-    "test:e2e": "playwright test"
+    "test:e2e": "npx playwright test"
   }
 }

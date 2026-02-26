@@ -29,12 +29,22 @@ const Popup = () => {
 
   const toggleEnabled = () => updateConfig({ isEnabled: !config.isEnabled });
   const setMode = (mode: HighlightMode) => updateConfig({ activeMode: mode });
+  const setColor = (e: React.ChangeEvent<HTMLInputElement>) => updateConfig({ color: e.target.value });
+  const setOpacity = (e: React.ChangeEvent<HTMLInputElement>) => updateConfig({ opacity: parseFloat(e.target.value) });
+
+  const clearAll = () => {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs[0]?.id) {
+        chrome.tabs.sendMessage(tabs[0].id, { type: 'CLEAR_HIGHLIGHTS' });
+      }
+    });
+  };
 
   return (
-    <div>
-      <h2>Better ADHD Read</h2>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <h2 style={{ margin: 0, fontSize: '18px' }}>ADHD Read</h2>
       
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <label htmlFor="enabledToggle" style={{ fontWeight: 'bold' }}>Active</label>
         <input
           id="enabledToggle"
@@ -44,11 +54,11 @@ const Popup = () => {
         />
       </div>
 
-      <div style={{ marginTop: '16px' }}>
-        <p style={{ fontWeight: 'bold', marginBottom: '8px' }}>Mode</p>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      <div style={{ borderTop: '1px solid #ddd', paddingTop: '12px' }}>
+        <p style={{ fontWeight: 'bold', margin: '0 0 8px 0' }}>Highlight Mode</p>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
           {(['word', 'sentence', 'paragraph', 'row'] as HighlightMode[]).map((mode) => (
-            <label key={mode} style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+            <label key={mode} style={{ display: 'flex', alignItems: 'center', gap: '4px', cursor: 'pointer', fontSize: '14px' }}>
               <input
                 type="radio"
                 name="mode"
@@ -60,6 +70,35 @@ const Popup = () => {
           ))}
         </div>
       </div>
+
+      <div style={{ borderTop: '1px solid #ddd', paddingTop: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <label style={{ fontWeight: 'bold', fontSize: '14px' }}>Color</label>
+          <input type="color" value={config.color} onChange={setColor} style={{ border: 'none', padding: 0, width: '30px', height: '20px', cursor: 'pointer' }} />
+        </div>
+        
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <label style={{ fontWeight: 'bold', fontSize: '14px' }}>Opacity</label>
+            <span style={{ fontSize: '12px' }}>{Math.round(config.opacity * 100)}%</span>
+          </div>
+          <input type="range" min="0.1" max="1.0" step="0.1" value={config.opacity} onChange={setOpacity} style={{ cursor: 'pointer' }} />
+        </div>
+      </div>
+
+      <button 
+        onClick={clearAll}
+        style={{
+          padding: '8px',
+          backgroundColor: '#f0f0f0',
+          border: '1px solid #ccc',
+          borderRadius: '4px',
+          cursor: 'pointer',
+          fontWeight: 'bold'
+        }}
+      >
+        Clear Current Highlight
+      </button>
     </div>
   );
 };

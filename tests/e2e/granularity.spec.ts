@@ -17,7 +17,7 @@ test.describe('Text Highlighter Extension - Granularity', () => {
     // Enable Word mode
     await page.evaluate(() => {
       // @ts-ignore
-      window.currentConfig = { activeMode: 'word', isEnabled: true, color: '#ffff00', opacity: 0.5 };
+      window.__ADHD_READ_CONFIG__({ activeMode: 'word', isEnabled: true, color: '#ffff00', opacity: 0.5 });
     });
 
     // Click near "this"
@@ -45,7 +45,7 @@ test.describe('Text Highlighter Extension - Granularity', () => {
     // Enable Paragraph mode
     await page.evaluate(() => {
       // @ts-ignore
-      window.currentConfig = { activeMode: 'paragraph', isEnabled: true, color: '#ffff00', opacity: 0.5 };
+      window.__ADHD_READ_CONFIG__({ activeMode: 'paragraph', isEnabled: true, color: '#ffff00', opacity: 0.5 });
     });
 
     const p1 = page.locator('#p1');

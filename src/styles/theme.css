@@ -1,5 +1,7 @@
 :root {
   /* Default highlight theme */
-  --ext-highlighter-bg: rgba(255, 255, 0, 0.5); /* light yellow with 50% opacity */
+  --ext-highlighter-bg-color: #ffff00;
+  --ext-highlighter-bg-opacity: 0.5;
+  --ext-highlighter-bg: color-mix(in srgb, var(--ext-highlighter-bg-color), transparent calc(100% - (var(--ext-highlighter-bg-opacity) * 100%)));
   --ext-highlighter-transition: background-color 0.2s ease-in-out;
 }

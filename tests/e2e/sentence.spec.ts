@@ -15,6 +15,7 @@ test.describe('Text Highlighter Extension - Sentence Mode', () => {
   });
 
   test('clicking a sentence highlights it', async ({ page }) => {
+    page.on('console', msg => console.log('PAGE LOG:', msg.text()));
     // 1. Setup a test page with sentences
     await page.setContent(`
       <html>
@@ -33,10 +34,10 @@ test.describe('Text Highlighter Extension - Sentence Mode', () => {
     await page.addStyleTag({ path: './src/styles/theme.css' });
     await page.addStyleTag({ path: './src/styles/highlighter.css' });
 
-    // 3. Simulate the config being loaded and enabled
+    // 3. Simulate the config being loaded and enabled using the test hook
     await page.evaluate(() => {
-      // @ts-ignore - injecting mock state into the page
-      window.currentConfig = { activeMode: 'sentence', isEnabled: true, color: '#ffff00', opacity: 0.5 };
+      // @ts-ignore
+      window.__ADHD_READ_CONFIG__({ activeMode: 'sentence', isEnabled: true, color: '#ffff00', opacity: 0.5 });
     });
 
     // 4. Click on the first sentence (approximate coordinates or specific element)
