@@ -1,0 +1,9 @@
+/* This class is applied directly to the text wrapping span */
+.ext-highlighter-active {
+  background-color: var(--ext-highlighter-bg) !important;
+  color: inherit !important;
+  transition: var(--ext-highlighter-transition);
+  border-radius: 2px;
+  /* Ensure it doesn't break inline flow */
+  display: inline;
+}

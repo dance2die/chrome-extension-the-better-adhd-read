@@ -13,6 +13,12 @@ export interface HighlightState {
   range: Range | null;
 }
 
+export interface TextBoundary {
+  start: number;
+  end: number;
+  segment: string;
+}
+
 // Internal Messaging Protocols
 export type ExtensionMessage = ConfigUpdateMessage | ConfigSyncMessage;
 
