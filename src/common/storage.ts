@@ -10,8 +10,11 @@ export const storage = {
    */
   async getConfig(): Promise<HighlightConfig> {
     try {
-      const data = await chrome.storage.local.get(STORAGE_KEY);
-      return (data[STORAGE_KEY] as HighlightConfig) || DEFAULT_CONFIG;
+      if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
+        const data = await chrome.storage.local.get(STORAGE_KEY);
+        return (data[STORAGE_KEY] as HighlightConfig) || DEFAULT_CONFIG;
+      }
+      return DEFAULT_CONFIG;
     } catch (error) {
       console.error('Failed to get config from storage', error);
       return DEFAULT_CONFIG;
@@ -23,7 +26,9 @@ export const storage = {
    */
   async setConfig(config: HighlightConfig): Promise<void> {
     try {
-      await chrome.storage.local.set({ [STORAGE_KEY]: config });
+      if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
+        await chrome.storage.local.set({ [STORAGE_KEY]: config });
+      }
     } catch (error) {
       console.error('Failed to save config to storage', error);
     }
@@ -43,10 +48,12 @@ export const storage = {
    * Listens for changes to the configuration in storage.
    */
   onChange(callback: (newConfig: HighlightConfig) => void): void {
-    chrome.storage.onChanged.addListener((changes, areaName) => {
-      if (areaName === 'local' && changes[STORAGE_KEY]) {
-        callback(changes[STORAGE_KEY].newValue as HighlightConfig);
-      }
-    });
+    if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.onChanged) {
+      chrome.storage.onChanged.addListener((changes, areaName) => {
+        if (areaName === 'local' && changes[STORAGE_KEY]) {
+          callback(changes[STORAGE_KEY].newValue as HighlightConfig);
+        }
+      });
+    }
   }
 };
