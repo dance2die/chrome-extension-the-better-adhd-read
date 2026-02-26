@@ -1,50 +1,45 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+  Sync Impact Report:
+  - Version change: 1.1.0 → 1.2.0
+  - List of modified principles:
+    - V. Git Workflow & Conventional Commits (Added): Mandated feature branches and conventional commits.
+  - Added sections: None
+  - Removed sections: None
+  - Templates requiring updates:
+    - .specify/templates/plan-template.md (✅ updated)
+    - .specify/templates/spec-template.md (✅ updated)
+  - Follow-up TODOs: None
+-->
+
+# ADHD Read Chrome Extension Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Code Quality
+Code MUST be clean, modular, and easy to maintain. Use consistent naming conventions, maintain small functions, and ensure high readability. TypeScript MUST be used for all source code to ensure type safety and early error detection; JavaScript is NOT permitted. Bun MUST be used as the primary runtime and package manager for development, testing, and building.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Testing Standards
+All core logic MUST be covered by unit tests. Critical user paths MUST have integration or E2E tests using Playwright. No feature is considered complete without automated verification.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. User Experience Consistency
+The UI MUST follow established design patterns to ensure a consistent and distraction-free experience for users with ADHD. Interactions SHOULD be predictable, responsive, and accessible.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Performance Requirements
+Extension MUST be lightweight and fast. Largest Contentful Paint (LCP) and other Core Web Vitals SHOULD be optimized. Content injection MUST NOT degrade page load performance or responsiveness.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Git Workflow & Conventional Commits
+All development MUST occur on feature branches. The `main` branch MUST NOT be modified directly without explicit user approval. All branch names and commit messages MUST follow the [Conventional Commits](https://www.conventionalcommits.org/) specification (e.g., `feat/`, `fix/`, `docs/`, `chore/`).
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## Additional Constraints
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+MUST adhere to Chrome Extension Manifest V3. No external trackers or invasive data collection. Privacy-first by design.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+## Development Workflow
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+Every change MUST go through a code review process. Automated CI/CD pipelines SHOULD run tests on every pull request using Bun. Versioning MUST follow semantic rules.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+The constitution is the source of truth for the project's development principles. Amendments require rationale and MUST be documented with a version bump. All pull requests MUST verify compliance with these principles.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.2.0 | **Ratified**: 2026-02-25 | **Last Amended**: 2026-02-25

@@ -1,0 +1,3 @@
+# AI Agent Folder
+# Ignore all private artifacts, tokens, and local agent state
+.gemini/

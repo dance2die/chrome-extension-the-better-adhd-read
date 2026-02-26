@@ -17,10 +17,10 @@
   the iteration process.
 -->
 
-**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]  
+**Language/Version**: [e.g., TypeScript (MANDATORY), Bun (MANDATORY)]  
 **Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]  
 **Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
-**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]  
+**Testing**: [e.g., Bun test, Playwright or NEEDS CLARIFICATION]  
 **Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
 **Project Type**: [e.g., library/cli/web-service/mobile-app/compiler/desktop-app or NEEDS CLARIFICATION]  
 **Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
@@ -31,7 +31,11 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- [ ] **I. Code Quality**: Does the design use Bun and mandate TypeScript?
+- [ ] **II. Testing Standards**: Are Bun unit tests and Playwright test strategies defined?
+- [ ] **III. User Experience Consistency**: Does the UI ensure distraction-free interactions?
+- [ ] **IV. Performance Requirements**: Will the change meet LCP and injection speed targets?
+- [ ] **V. Git Workflow & Conventional Commits**: Is the branch using conventional naming (e.g., feat/, fix/) and commit strategy?
 
 ## Project Structure
 

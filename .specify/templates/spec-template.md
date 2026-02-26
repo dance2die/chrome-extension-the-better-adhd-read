@@ -90,6 +90,16 @@
 - **FR-004**: System MUST [data requirement, e.g., "persist user preferences"]
 - **FR-005**: System MUST [behavior, e.g., "log all security events"]
 
+### Non-Functional & Compliance Requirements
+
+- **NFR-001**: MUST adhere to Chrome Extension Manifest V3.
+- **NFR-002**: MUST be implemented in TypeScript (MANDATORY). JavaScript is NOT permitted.
+- **NFR-003**: MUST use Bun (MANDATORY) for development, testing, and building.
+- **NFR-004**: MUST NOT use external trackers; all data processing MUST be local.
+- **NFR-005**: Performance: Content injection MUST NOT degrade page load speed (LCP).
+- **NFR-006**: MUST use feature branches for development. `main` branch MUST NOT be modified directly.
+- **NFR-007**: Branch names and commit messages MUST follow Conventional Commits (e.g., feat/, fix/).
+
 *Example of marking unclear requirements:*
 
 - **FR-006**: System MUST authenticate users via [NEEDS CLARIFICATION: auth method not specified - email/password, SSO, OAuth?]
