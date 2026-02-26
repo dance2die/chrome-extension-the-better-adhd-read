@@ -76,15 +76,15 @@ description: "Task list for Text Highlighter Extension implementation"
 
 ### Tests for User Story 2 (MANDATORY) ⚠️
 
-- [ ] T024 [US2] E2E test for Row highlight positioning and dimensions in `tests/e2e/row.spec.ts`
+- [x] T024 [US2] E2E test for Row highlight positioning and dimensions in `tests/e2e/row.spec.ts`
 
 ### Implementation for User Story 2
 
-- [ ] T025 [P] [US2] Add "Row" option to popup UI in `src/popup/index.tsx`
-- [ ] T026 [US2] Implement row detection (calculating line height and bounding box) in `src/content/segmenter.ts`
-- [ ] T027 [US2] Implement overlay `<div>` rendering for row highlighting in `src/content/highlighter.ts`
-- [ ] T028 [US2] Add styling for row overlay in `src/styles/highlighter.css` (pointer-events: none)
-- [ ] T029 [US2] Run `bun run build` and `bun run typecheck` to verify no errors.
+- [x] T025 [P] [US2] Add "Row" option to popup UI in `src/popup/index.tsx`
+- [x] T026 [US2] Implement row detection (calculating line height and bounding box) in `src/content/segmenter.ts`
+- [x] T027 [US2] Implement overlay `<div>` rendering for row highlighting in `src/content/highlighter.ts`
+- [x] T028 [US2] Add styling for row overlay in `src/styles/highlighter.css` (pointer-events: none)
+- [x] T029 [US2] Run `bun run build` and `bun run typecheck` to verify no errors.
 
 **Checkpoint**: Row Highlighting Ready - Users can now use horizontal guide mode.
 

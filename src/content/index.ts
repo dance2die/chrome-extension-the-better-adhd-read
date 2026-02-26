@@ -1,7 +1,7 @@
 import type { ExtensionMessage, HighlightConfig } from '../common/types';
 import { DEFAULT_CONFIG } from '../common/types';
-import { getSentenceBoundaries } from './segmenter';
-import { applyHighlight, clearHighlight, isAlreadyHighlighted } from './highlighter';
+import { getSentenceBoundaries, getRowBoundaries } from './segmenter';
+import { applyHighlight, clearHighlight, isAlreadyHighlighted, applyRowHighlight } from './highlighter';
 
 // Global state for the content script
 let currentConfig: HighlightConfig = DEFAULT_CONFIG;
@@ -77,6 +77,20 @@ document.addEventListener('click', (event: MouseEvent) => {
       }
       
       // Clear selection so the user doesn't see browser highlight over our custom highlight
+      selection.removeAllRanges();
+    }
+  } else if (currentConfig.activeMode === 'row') {
+    const t0 = performance.now();
+    
+    const boundary = getRowBoundaries(range);
+    if (boundary) {
+      applyRowHighlight(targetElement, boundary);
+      
+      const t1 = performance.now();
+      if (t1 - t0 > 16) {
+        console.warn(`Row highlight application missed 60fps target. Took ${t1 - t0}ms`);
+      }
+      
       selection.removeAllRanges();
     }
   }

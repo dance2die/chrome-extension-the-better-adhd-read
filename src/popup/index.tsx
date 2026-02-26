@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { storage } from '../common/storage';
-import type { HighlightConfig } from '../common/types';
+import type { HighlightConfig, HighlightMode } from '../common/types';
 import { DEFAULT_CONFIG } from '../common/types';
 
 const Popup = () => {
@@ -15,8 +15,8 @@ const Popup = () => {
     storage.onChange(setConfig);
   }, []);
 
-  const toggleEnabled = async () => {
-    const newConfig = { ...config, isEnabled: !config.isEnabled };
+  const updateConfig = async (updates: Partial<HighlightConfig>) => {
+    const newConfig = { ...config, ...updates };
     await storage.setConfig(newConfig);
     setConfig(newConfig);
     
@@ -27,11 +27,15 @@ const Popup = () => {
     });
   };
 
+  const toggleEnabled = () => updateConfig({ isEnabled: !config.isEnabled });
+  const setMode = (mode: HighlightMode) => updateConfig({ activeMode: mode });
+
   return (
     <div>
-      <h2>Text Highlighter</h2>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '16px' }}>
-        <label htmlFor="enabledToggle">Enable Extension</label>
+      <h2>Better ADHD Read</h2>
+      
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+        <label htmlFor="enabledToggle" style={{ fontWeight: 'bold' }}>Active</label>
         <input
           id="enabledToggle"
           type="checkbox"
@@ -39,7 +43,23 @@ const Popup = () => {
           onChange={toggleEnabled}
         />
       </div>
-      {/* Modes and colors will be added in Phase 4/5/6 */}
+
+      <div style={{ marginTop: '16px' }}>
+        <p style={{ fontWeight: 'bold', marginBottom: '8px' }}>Mode</p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          {(['sentence', 'row'] as HighlightMode[]).map((mode) => (
+            <label key={mode} style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+              <input
+                type="radio"
+                name="mode"
+                checked={config.activeMode === mode}
+                onChange={() => setMode(mode)}
+              />
+              {mode.charAt(0).toUpperCase() + mode.slice(1)}
+            </label>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

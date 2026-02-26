@@ -38,3 +38,33 @@ export function getSentenceBoundaries(text: string, offset: number): TextBoundar
 
   return null;
 }
+
+export interface RowBoundary {
+  top: number;
+  height: number;
+  width: number;
+  left: number;
+}
+
+/**
+ * Calculates the bounding box for a single row of text.
+ * Since CSS doesn't have a "row" selector, we use the character's 
+ * line-height and vertical position.
+ */
+export function getRowBoundaries(range: Range): RowBoundary | null {
+  const rects = range.getClientRects();
+  if (rects.length === 0) return null;
+
+  // We take the first rect (where the click happened)
+  const rect = rects[0];
+  if (!rect) return null;
+
+  // For a row, we want to know the vertical start/end.
+  // We'll also return the width of the container later in the highlighter.
+  return {
+    top: rect.top + window.scrollY,
+    height: rect.height,
+    left: rect.left + window.scrollX,
+    width: rect.width
+  };
+}

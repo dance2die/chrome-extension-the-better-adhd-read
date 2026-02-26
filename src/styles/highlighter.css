@@ -7,3 +7,12 @@
   /* Ensure it doesn't break inline flow */
   display: inline;
 }
+
+/* This class is applied to the absolute positioned row overlay */
+.ext-highlighter-row-overlay {
+  background-color: var(--ext-highlighter-bg) !important;
+  transition: var(--ext-highlighter-transition);
+  border-radius: 2px;
+  pointer-events: none; /* Let clicks pass through to the text below */
+  z-index: 9999;
+}
