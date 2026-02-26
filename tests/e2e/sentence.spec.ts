@@ -15,7 +15,6 @@ test.describe('Text Highlighter Extension - Sentence Mode', () => {
   });
 
   test('clicking a sentence highlights it', async ({ page }) => {
-    page.on('console', msg => console.log('PAGE LOG:', msg.text()));
     // 1. Setup a test page with sentences
     await page.setContent(`
       <html>
