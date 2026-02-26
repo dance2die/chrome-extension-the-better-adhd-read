@@ -12,13 +12,37 @@ export const storage = {
     try {
       if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
         const data = await chrome.storage.local.get(STORAGE_KEY);
-        return (data[STORAGE_KEY] as HighlightConfig) || DEFAULT_CONFIG;
+        const config = data[STORAGE_KEY];
+        if (!config) return DEFAULT_CONFIG;
+
+        return this.migrateConfig(config);
       }
       return DEFAULT_CONFIG;
     } catch (error) {
       console.error('Failed to get config from storage', error);
       return DEFAULT_CONFIG;
     }
+  },
+
+  /**
+   * Migrates old configuration formats to the current one.
+   */
+  migrateConfig(config: any): HighlightConfig {
+    // Migration from single 'color' property
+    if (config.color && !config.lightColor) {
+      return {
+        ...DEFAULT_CONFIG,
+        ...config,
+        lightColor: config.color,
+        // The rest come from DEFAULT_CONFIG (darkColor, themeMode)
+      };
+    }
+
+    // Ensure all required fields exist
+    return {
+      ...DEFAULT_CONFIG,
+      ...config
+    };
   },
 
   /**
