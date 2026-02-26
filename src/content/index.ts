@@ -3,6 +3,7 @@ import { DEFAULT_CONFIG } from '../common/types';
 import { getSentenceBoundaries, getRowBoundaries, getWordBoundaries, getParagraphBoundaries } from './segmenter';
 import { applyHighlight, clearHighlight, isAlreadyHighlighted, applyRowHighlight } from './highlighter';
 import { storage } from '../common/storage';
+import { getEffectiveColor } from '../common/theme';
 
 console.log('📖 Better ADHD Read: Content script loading...');
 
@@ -21,14 +22,6 @@ if (typeof window !== 'undefined') {
 /**
  * Determines the final highlight color based on the config and current theme.
  */
-export function getEffectiveColor(config: HighlightConfig): string {
-  if (config.themeMode === 'light') return config.lightColor;
-  if (config.themeMode === 'dark') return config.darkColor;
-
-  // 'system' mode
-  const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  return isDarkMode ? config.darkColor : config.lightColor;
-}
 
 /**
  * Updates the CSS variables used for highlighting.

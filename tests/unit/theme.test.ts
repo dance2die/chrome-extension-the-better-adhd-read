@@ -1,5 +1,5 @@
 import { describe, expect, test, spyOn } from "bun:test";
-import { getEffectiveColor } from "../../src/content/index";
+import { getEffectiveColor } from "../../src/common/theme";
 import { DEFAULT_CONFIG } from "../../src/common/types";
 import type { HighlightConfig } from "../../src/common/types";
 
