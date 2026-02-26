@@ -19,11 +19,24 @@ if (typeof window !== 'undefined') {
 }
 
 /**
+ * Determines the final highlight color based on the config and current theme.
+ */
+function getEffectiveColor(config: HighlightConfig): string {
+  if (config.themeMode === 'light') return config.lightColor;
+  if (config.themeMode === 'dark') return config.darkColor;
+
+  // 'system' mode
+  const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  return isDarkMode ? config.darkColor : config.lightColor;
+}
+
+/**
  * Updates the CSS variables used for highlighting.
  */
 function updateStyles(config: HighlightConfig) {
   const root = document.documentElement;
-  root.style.setProperty('--ext-highlighter-bg-color', config.color);
+  const activeColor = getEffectiveColor(config);
+  root.style.setProperty('--ext-highlighter-bg-color', activeColor);
   root.style.setProperty('--ext-highlighter-bg-opacity', config.opacity.toString());
 }
 
@@ -32,6 +45,13 @@ storage.getConfig().then((config) => {
   currentConfig = config;
   updateStyles(config);
   console.log('📖 Better ADHD Read: Content script initialized with config:', config);
+});
+
+// Listen for system color scheme changes if in 'system' mode
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+  if (currentConfig.themeMode === 'system') {
+    updateStyles(currentConfig);
+  }
 });
 
 // Listen for messages from the background script
