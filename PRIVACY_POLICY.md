@@ -16,7 +16,6 @@ The Extension requires the following permissions to function correctly:
 
 - **`storage`**: Used exclusively to persist your locally selected highlight color, theme mode, and highlight opacity preferences across sessions. This data never leaves your device.
 - **`activeTab`**: Required to read the text of the webpage you are currently viewing and apply highlight formatting when you click.
-- **`scripting`**: Needed to inject the internal highlighter styles and logic into the webpage you are currently reading.
 
 ## 3. Third-Party Services and Analytics
 
