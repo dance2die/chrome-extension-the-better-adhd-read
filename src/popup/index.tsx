@@ -39,6 +39,13 @@ const Popup = () => {
     });
   };
 
+  const modeIcons: Record<HighlightMode, string> = {
+    word: 'Aa',
+    sentence: '📝',
+    paragraph: '📄',
+    row: '📏',
+  };
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
       <h2 style={{ margin: 0, fontSize: '18px' }}>ADHD Read</h2>
@@ -66,17 +73,35 @@ const Popup = () => {
 
       <div style={{ borderTop: '1px solid #ddd', paddingTop: '12px' }}>
         <p style={{ fontWeight: 'bold', margin: '0 0 8px 0' }}>Highlight Mode</p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
           {(['word', 'sentence', 'paragraph', 'row'] as HighlightMode[]).map((mode) => (
-            <label key={mode} style={{ display: 'flex', alignItems: 'center', gap: '4px', cursor: 'pointer', fontSize: '14px' }}>
+            <div
+              key={mode}
+              onClick={() => setMode(mode)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                cursor: 'pointer',
+                fontSize: '14px',
+                padding: '6px 8px',
+                borderRadius: '4px',
+                backgroundColor: config.activeMode === mode ? '#e3f2fd' : 'transparent',
+              }}
+            >
               <input
                 type="radio"
                 name="mode"
                 checked={config.activeMode === mode}
                 onChange={() => setMode(mode)}
+                onClick={(e) => e.stopPropagation()}
+                style={{ cursor: 'pointer', margin: 0 }}
               />
-              {mode.charAt(0).toUpperCase() + mode.slice(1)}
-            </label>
+              <span style={{ fontSize: '14px', width: '20px', textAlign: 'center' }}>
+                {modeIcons[mode]}
+              </span>
+              <span>{mode.charAt(0).toUpperCase() + mode.slice(1)}</span>
+            </div>
           ))}
         </div>
       </div>
