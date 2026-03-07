@@ -41,7 +41,7 @@ const Popup = () => {
   };
 
   const modeIcons: Record<HighlightMode, string> = {
-    word: 'Aa',
+    word: '🔡',
     sentence: '📝',
     paragraph: '📄',
     row: '📏',
