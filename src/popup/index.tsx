@@ -43,13 +43,24 @@ const Popup = () => {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
       <h2 style={{ margin: 0, fontSize: '18px' }}>ADHD Read</h2>
 
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <label htmlFor="enabledToggle" style={{ fontWeight: 'bold' }}>Active</label>
+      <div
+        onClick={toggleEnabled}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          cursor: 'pointer',
+          padding: '4px 0',
+        }}
+      >
+        <span style={{ fontWeight: 'bold' }}>Active</span>
         <input
           id="enabledToggle"
           type="checkbox"
           checked={config.isEnabled}
           onChange={toggleEnabled}
+          onClick={(e) => e.stopPropagation()}
+          style={{ cursor: 'pointer' }}
         />
       </div>
 
