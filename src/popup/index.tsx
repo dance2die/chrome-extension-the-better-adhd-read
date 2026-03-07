@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { storage } from '../common/storage';
 import type { HighlightConfig, HighlightMode } from '../common/types';
-import { DEFAULT_CONFIG } from '../common/types';
+import { DEFAULT_CONFIG, COLOR_PRESETS } from '../common/types';
 
 const Popup = () => {
   const [config, setConfig] = useState<HighlightConfig>(DEFAULT_CONFIG);
+  const [openDropdown, setOpenDropdown] = useState<'light' | 'dark' | null>(null);
 
   useEffect(() => {
     // Load initial config
@@ -110,13 +111,123 @@ const Popup = () => {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           <label style={{ fontWeight: 'bold', fontSize: '14px' }}>Theme Colors</label>
           <div style={{ display: 'flex', gap: '8px' }}>
-            <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '8px', padding: '6px', border: '1px solid #eee', borderRadius: '4px' }}>
-              <div style={{ width: '16px', height: '16px', borderRadius: '50%', backgroundColor: config.lightColor, border: '1px solid #ddd' }} />
-              <span style={{ fontSize: '12px' }}>Light</span>
+            {/* Light swatch */}
+            <div style={{ flex: 1, position: 'relative' }}>
+              <div
+                onClick={() => setOpenDropdown(openDropdown === 'light' ? null : 'light')}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '6px',
+                  border: '1px solid #ddd',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  backgroundColor: openDropdown === 'light' ? '#f0f0f0' : 'transparent',
+                }}
+              >
+                <div style={{
+                  width: '16px', height: '16px', borderRadius: '50%',
+                  backgroundColor: config.lightColor, border: '1px solid #ddd',
+                }} />
+                <span style={{ fontSize: '12px', flex: 1 }}>Light</span>
+                <span style={{ fontSize: '10px' }}>▼</span>
+              </div>
+              {openDropdown === 'light' && (
+                <div style={{
+                  position: 'absolute', top: '100%', left: 0, right: 0,
+                  backgroundColor: '#fff', border: '1px solid #ddd', borderRadius: '4px',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.15)', zIndex: 10, marginTop: '2px',
+                }}>
+                  {COLOR_PRESETS.filter(p => p.recommended !== 'dark').map(p => (
+                    <div
+                      key={p.name}
+                      onClick={() => {
+                        updateConfig({ lightColor: p.hex });
+                        setOpenDropdown(null);
+                      }}
+                      style={{
+                        display: 'flex', alignItems: 'center', gap: '8px',
+                        padding: '6px 8px', cursor: 'pointer', fontSize: '12px',
+                        backgroundColor: config.lightColor === p.hex ? '#e3f2fd' : 'transparent',
+                      }}
+                      onMouseEnter={(e) => {
+                        if (config.lightColor !== p.hex)
+                          (e.currentTarget as HTMLElement).style.backgroundColor = '#f5f5f5';
+                      }}
+                      onMouseLeave={(e) => {
+                        (e.currentTarget as HTMLElement).style.backgroundColor =
+                          config.lightColor === p.hex ? '#e3f2fd' : 'transparent';
+                      }}
+                    >
+                      <div style={{
+                        width: '14px', height: '14px', borderRadius: '50%',
+                        backgroundColor: p.hex, border: '1px solid #ddd',
+                      }} />
+                      {p.name}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
-            <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '8px', padding: '6px', border: '1px solid #eee', borderRadius: '4px' }}>
-              <div style={{ width: '16px', height: '16px', borderRadius: '50%', backgroundColor: config.darkColor, border: '1px solid #ddd' }} />
-              <span style={{ fontSize: '12px' }}>Dark</span>
+            {/* Dark swatch */}
+            <div style={{ flex: 1, position: 'relative' }}>
+              <div
+                onClick={() => setOpenDropdown(openDropdown === 'dark' ? null : 'dark')}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '6px',
+                  border: '1px solid #ddd',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  backgroundColor: openDropdown === 'dark' ? '#f0f0f0' : 'transparent',
+                }}
+              >
+                <div style={{
+                  width: '16px', height: '16px', borderRadius: '50%',
+                  backgroundColor: config.darkColor, border: '1px solid #ddd',
+                }} />
+                <span style={{ fontSize: '12px', flex: 1 }}>Dark</span>
+                <span style={{ fontSize: '10px' }}>▼</span>
+              </div>
+              {openDropdown === 'dark' && (
+                <div style={{
+                  position: 'absolute', top: '100%', left: 0, right: 0,
+                  backgroundColor: '#fff', border: '1px solid #ddd', borderRadius: '4px',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.15)', zIndex: 10, marginTop: '2px',
+                }}>
+                  {COLOR_PRESETS.filter(p => p.recommended !== 'light').map(p => (
+                    <div
+                      key={p.name}
+                      onClick={() => {
+                        updateConfig({ darkColor: p.hex });
+                        setOpenDropdown(null);
+                      }}
+                      style={{
+                        display: 'flex', alignItems: 'center', gap: '8px',
+                        padding: '6px 8px', cursor: 'pointer', fontSize: '12px',
+                        backgroundColor: config.darkColor === p.hex ? '#e3f2fd' : 'transparent',
+                      }}
+                      onMouseEnter={(e) => {
+                        if (config.darkColor !== p.hex)
+                          (e.currentTarget as HTMLElement).style.backgroundColor = '#f5f5f5';
+                      }}
+                      onMouseLeave={(e) => {
+                        (e.currentTarget as HTMLElement).style.backgroundColor =
+                          config.darkColor === p.hex ? '#e3f2fd' : 'transparent';
+                      }}
+                    >
+                      <div style={{
+                        width: '14px', height: '14px', borderRadius: '50%',
+                        backgroundColor: p.hex, border: '1px solid #ddd',
+                      }} />
+                      {p.name}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
           <button
