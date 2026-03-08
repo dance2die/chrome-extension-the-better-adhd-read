@@ -41,17 +41,20 @@ export function applyRowHighlight(parent: HTMLElement, boundary: RowBoundary): v
   const overlay = document.createElement('div');
   overlay.className = 'ext-highlighter-row-overlay';
 
-  // Position it absolutely
   overlay.style.position = 'absolute';
-  overlay.style.top = `${boundary.top}px`;
 
-  // Use the parent's width and left position for better alignment
-  const parentRect = parent.getBoundingClientRect();
-  overlay.style.left = `${parentRect.left + window.scrollX}px`;
-  overlay.style.width = `${parentRect.width}px`;
+  // Anchor relative to offsetParent for correct scroll behavior
+  const anchor = (parent.offsetParent as HTMLElement) || document.body;
+  if (getComputedStyle(anchor).position === 'static') {
+    anchor.style.position = 'relative';
+  }
+  const anchorRect = anchor.getBoundingClientRect();
+  overlay.style.top = `${boundary.top - anchorRect.top - anchor.clientTop + anchor.scrollTop}px`;
+  overlay.style.left = `${boundary.left - anchorRect.left - anchor.clientLeft + anchor.scrollLeft}px`;
+  overlay.style.width = `${boundary.width}px`;
   overlay.style.height = `${boundary.height}px`;
 
-  document.body.appendChild(overlay);
+  anchor.appendChild(overlay);
   activeRowOverlay = overlay;
 
   currentState = {

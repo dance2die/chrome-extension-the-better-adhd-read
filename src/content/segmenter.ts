@@ -107,9 +107,9 @@ export function getRowBoundaries(range: Range): RowBoundary | null {
   // For a row, we want to know the vertical start/end.
   // We'll also return the width of the container later in the highlighter.
   return {
-    top: rect.top + window.scrollY,
+    top: rect.top,
     height: rect.height,
-    left: rect.left + window.scrollX,
+    left: rect.left,
     width: rect.width
   };
 }

@@ -142,6 +142,9 @@ document.addEventListener('click', (event: MouseEvent) => {
   } else if (currentConfig.activeMode === 'row') {
     const boundary = getRowBoundaries(range);
     if (boundary) {
+      const parentRect = targetElement.getBoundingClientRect();
+      boundary.left = parentRect.left;
+      boundary.width = parentRect.width;
       applyRowHighlight(targetElement, boundary);
       selectionCleanup();
     }
