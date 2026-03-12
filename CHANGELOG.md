@@ -5,6 +5,12 @@ All notable changes to Better ADHD Read will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.2.0] - 2026-03-12
+
+### Added
+- "Highlight Trigger" option in popup to switch between Click and Hover activation
+- Debounced hover mode tracking to seamlessly highlight text without clicking
+
 ## [1.1.1] - 2026-03-08
 
 ### Fixed
