@@ -5,6 +5,14 @@ import { applyHighlight, clearHighlight, isAlreadyHighlighted, applyRowHighlight
 import { storage } from '../common/storage';
 import { getEffectiveColor } from '../common/theme';
 
+function debounce<T extends (...args: any[]) => void>(fn: T, ms: number): (...args: Parameters<T>) => void {
+  let timer: ReturnType<typeof setTimeout>;
+  return (...args: Parameters<T>) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), ms);
+  };
+}
+
 console.log('📖 Better ADHD Read: Content script loading...');
 
 // Global state for the content script
@@ -71,53 +79,32 @@ window.addEventListener('beforeunload', () => {
   clearHighlight();
 });
 
-// Handle clicks for highlighting text
-document.addEventListener('click', (event: MouseEvent) => {
-  console.log('📖 Better ADHD Read: Click detected', {
-    isEnabled: currentConfig.isEnabled,
-    mode: currentConfig.activeMode,
-    target: event.target
-  });
-
-  if (!currentConfig.isEnabled) {
-    return;
-  }
-
-  const targetElement = event.target as HTMLElement;
+function handleHighlightEvent(clientX: number, clientY: number, targetElement: HTMLElement, isTriggerClick: boolean): void {
+  if (!currentConfig.isEnabled) return;
   if (!targetElement) return;
 
-  if (isAlreadyHighlighted(targetElement)) {
+  if (isTriggerClick && isAlreadyHighlighted(targetElement)) {
     console.log('📖 Better ADHD Read: Toggling off highlight');
     clearHighlight();
-    event.stopPropagation();
     return;
   }
 
   // BUG #2 FIX: Don't interfere with native text selection (user dragging to copy)
   const selection = window.getSelection();
-  if (selection && !selection.isCollapsed) {
-    return;
-  }
+  if (selection && !selection.isCollapsed) return;
 
   // BUG #1 FIX: Clear any existing highlight BEFORE obtaining the text node reference
-  // so that parent.normalize() doesn't invalidate the node we get below
   clearHighlight();
 
   let range: Range | null = null;
   if (document.caretRangeFromPoint) {
-    range = document.caretRangeFromPoint(event.clientX, event.clientY);
+    range = document.caretRangeFromPoint(clientX, clientY);
   }
 
-  if (!range) {
-    console.log('📖 Better ADHD Read: No text range found at click point');
-    return;
-  }
+  if (!range) return;
 
   const textNode = range.startContainer;
-  if (textNode.nodeType !== Node.TEXT_NODE || !textNode.textContent) {
-    console.log('📖 Better ADHD Read: Click target is not a text node');
-    return;
-  }
+  if (textNode.nodeType !== Node.TEXT_NODE || !textNode.textContent) return;
 
   const t0 = performance.now();
 
@@ -154,7 +141,28 @@ document.addEventListener('click', (event: MouseEvent) => {
   if (t1 - t0 > 16) {
     console.warn(`📖 Better ADHD Read: Highlight took ${t1 - t0}ms`);
   }
+}
+
+// Handle clicks for highlighting text
+document.addEventListener('click', (event: MouseEvent) => {
+  if (currentConfig.triggerMode !== 'click') return;
+
+  console.log('📖 Better ADHD Read: Click detected', {
+    isEnabled: currentConfig.isEnabled,
+    mode: currentConfig.activeMode,
+    target: event.target
+  });
+
+  handleHighlightEvent(event.clientX, event.clientY, event.target as HTMLElement, true);
 });
+
+// Handle hover for highlighting text (debounced)
+const HOVER_DEBOUNCE_MS = 50;
+
+document.addEventListener('mousemove', debounce((event: MouseEvent) => {
+  if (currentConfig.triggerMode !== 'hover') return;
+  handleHighlightEvent(event.clientX, event.clientY, event.target as HTMLElement, false);
+}, HOVER_DEBOUNCE_MS));
 
 function selectionCleanup() {
   const selection = window.getSelection();
