@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { storage } from '../common/storage';
-import type { HighlightConfig, HighlightMode } from '../common/types';
+import type { HighlightConfig, HighlightMode, TriggerMode } from '../common/types';
 import { DEFAULT_CONFIG, COLOR_PRESETS } from '../common/types';
 
 const Popup = () => {
@@ -30,6 +30,7 @@ const Popup = () => {
 
   const toggleEnabled = () => updateConfig({ isEnabled: !config.isEnabled });
   const setMode = (mode: HighlightMode) => updateConfig({ activeMode: mode });
+  const setTrigger = (trigger: TriggerMode) => updateConfig({ triggerMode: trigger });
   const setOpacity = (e: React.ChangeEvent<HTMLInputElement>) => updateConfig({ opacity: parseFloat(e.target.value) });
 
   const clearAll = () => {
@@ -45,6 +46,11 @@ const Popup = () => {
     sentence: '📝',
     paragraph: '📄',
     row: '📏',
+  };
+
+  const triggerIcons: Record<TriggerMode, string> = {
+    click: '🖱️',
+    hover: '👆',
   };
 
   return (
@@ -102,6 +108,41 @@ const Popup = () => {
                 {modeIcons[mode]}
               </span>
               <span>{mode.charAt(0).toUpperCase() + mode.slice(1)}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ borderTop: '1px solid #ddd', paddingTop: '12px' }}>
+        <p style={{ fontWeight: 'bold', margin: '0 0 8px 0' }}>Highlight Trigger</p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+          {(['click', 'hover'] as TriggerMode[]).map((trigger) => (
+            <div
+              key={trigger}
+              onClick={() => setTrigger(trigger)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                cursor: 'pointer',
+                fontSize: '14px',
+                padding: '6px 8px',
+                borderRadius: '4px',
+                backgroundColor: config.triggerMode === trigger ? '#e3f2fd' : 'transparent',
+              }}
+            >
+              <input
+                type="radio"
+                name="trigger"
+                checked={config.triggerMode === trigger}
+                onChange={() => setTrigger(trigger)}
+                onClick={(e) => e.stopPropagation()}
+                style={{ cursor: 'pointer', margin: 0 }}
+              />
+              <span style={{ fontSize: '14px', width: '20px', textAlign: 'center' }}>
+                {triggerIcons[trigger]}
+              </span>
+              <span>{trigger.charAt(0).toUpperCase() + trigger.slice(1)}</span>
             </div>
           ))}
         </div>
