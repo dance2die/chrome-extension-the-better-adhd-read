@@ -5,6 +5,7 @@ import { applyHighlight, clearHighlight, isAlreadyHighlighted, applyRowHighlight
 import { storage } from '../common/storage';
 import { getEffectiveColor } from '../common/theme';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function debounce<T extends (...args: any[]) => void>(fn: T, ms: number): (...args: Parameters<T>) => void {
   let timer: ReturnType<typeof setTimeout>;
   return (...args: Parameters<T>) => {
