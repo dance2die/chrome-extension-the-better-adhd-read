@@ -1,5 +1,6 @@
 export type HighlightMode = 'word' | 'sentence' | 'paragraph' | 'row';
 export type ThemeMode = 'system' | 'light' | 'dark';
+export type TriggerMode = 'click' | 'hover';
 
 export interface HighlightConfig {
   activeMode: HighlightMode;
@@ -8,6 +9,7 @@ export interface HighlightConfig {
   themeMode: ThemeMode;
   opacity: number;
   isEnabled: boolean;
+  triggerMode: TriggerMode;
 }
 
 export interface ColorPreset {
@@ -61,4 +63,5 @@ export const DEFAULT_CONFIG: HighlightConfig = {
   themeMode: 'system',
   opacity: 0.5,
   isEnabled: true,
+  triggerMode: 'click',
 };
